@@ -6,7 +6,7 @@ class hlkiller_core {
 		self::$db = new mysqli(
 			\config::$db_server,
 			\config::$db_username,
-			\config::$db_username,
+			\config::$db_userpass,
 			\config::$db_name
 		);
 	}
