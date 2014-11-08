@@ -36,8 +36,10 @@ class db_generator {
         //exit ();
     }
 
-
-    public function generate_fish () {
+	/**
+	 * generate random data for base
+	 */
+	public function generate_fish () {
 	    $config = \testing_config::$gen_fish;
         $start = microtime(TRUE);
         
@@ -249,8 +251,10 @@ class db_generator {
        
     }
 
-
-    public function clear_db () {
+	/**
+	 * clear data in database
+	 */
+	public function clear_db () {
         
         $action = filter_input(INPUT_POST, 'action',FILTER_VALIDATE_INT);
         

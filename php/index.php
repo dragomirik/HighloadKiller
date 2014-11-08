@@ -40,6 +40,11 @@ function ajax_route ($request) {
 			$machine_gun->run_select($machine_gun->$func ());
 		}
 			break;
+		case 'make_random_query' : {
+			$machine_gun = new \machine_gun ();
+			$machine_gun->make_random_query();
+		}
+			break;
 		case 'hight_load_emulation' : {
 			$machine_gun = new \machine_gun ();
 			$machine_gun->high_load_emulation();
