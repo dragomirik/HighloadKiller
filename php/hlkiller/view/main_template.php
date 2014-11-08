@@ -1,4 +1,7 @@
-<?php $front_end_folder = '/hlkiller/hlkiller/view/includes'; ?>
+<?php $front_end_folder = 'hlkiller/view/includes';
+		#/HighloadKIller/php/hlkiller/view/includes
+		#/hlkiller/hlkiller/view/includes
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
