@@ -252,6 +252,8 @@ class db_generator {
 
     public function clear_db () {
         
+        $action = filter_input(INPUT_POST, 'action',FILTER_VALIDATE_INT);
+        
         $_SESSION['exist'] = '0';
         foreach(\config::getTables() as $table) {
             try {
@@ -271,6 +273,14 @@ class db_generator {
                 die ($e->getMessage());
             }
         }
-        $this->add_structure_dump(PATH.'test_dump.sql');
+        switch ($action) {
+            case 1:
+                $this->add_structure_dump(PATH.'test_dump1.sql');
+                break;
+            case 2:
+                $this->add_structure_dump(PATH.'test_dump2.sql');
+                break;
+        }
+        
     }
 }
