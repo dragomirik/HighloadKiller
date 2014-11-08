@@ -15,7 +15,7 @@
 		 *
 		 * @var array
 		 */
-		private static $tables  = array(
+		private static $db_model  = array(
 			'users' => array(
 				'users_id' => array(
 					'type'      =>  'int',
@@ -122,6 +122,13 @@
 		);
 
 		public static function getModel () {
-			return self::$tables;
+			return self::$db_model;
+		}
+
+		public static function getTables () {
+			$tables = array ();
+			foreach (self::$db_model as $table => $value)
+				$tables [] = $table;
+			return $tables;
 		}
 	}
