@@ -1,4 +1,29 @@
 
+-- Dumping structure for table high_load.users
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE IF NOT EXISTS `users` (
+  `users_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `users_username` varchar(100) NOT NULL,
+  `users_password` varchar(80) NOT NULL,
+  `users_email` varchar(100) NOT NULL,
+  `users_created_on` int(11) unsigned NOT NULL,
+  `users_last_login` int(11) unsigned DEFAULT NULL,
+  `users_active` tinyint(1) unsigned DEFAULT NULL,
+  `users_phone` varchar(20) DEFAULT NULL,
+  `users_social_vk` varchar(128) NOT NULL,
+  `users_social_fb` varchar(128) NOT NULL,
+  `users_sex` int(1) NOT NULL,
+  `users_birth_date` varchar(32) NOT NULL,
+  `users_adv_info` varchar(1024) NOT NULL,
+  `users_img` varchar(256) NOT NULL,
+  `users_verify_phone` int(1) NOT NULL,
+  `users_premium` int(1) NOT NULL,
+  PRIMARY KEY (`users_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Data exporting was unselected.
+
+
 -- Dumping structure for table high_load.categories
 DROP TABLE IF EXISTS `categories`;
 CREATE TABLE IF NOT EXISTS `categories` (
@@ -86,29 +111,6 @@ CREATE TABLE IF NOT EXISTS `rel_users_posts_comments` (
 -- Data exporting was unselected.
 
 
--- Dumping structure for table high_load.users
-DROP TABLE IF EXISTS `users`;
-CREATE TABLE IF NOT EXISTS `users` (
-  `users_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `users_username` varchar(100) NOT NULL,
-  `users_password` varchar(80) NOT NULL,
-  `users_email` varchar(100) NOT NULL,
-  `users_created_on` int(11) unsigned NOT NULL,
-  `users_last_login` int(11) unsigned DEFAULT NULL,
-  `users_active` tinyint(1) unsigned DEFAULT NULL,
-  `users_phone` varchar(20) DEFAULT NULL,
-  `users_social_vk` varchar(128) NOT NULL,
-  `users_social_fb` varchar(128) NOT NULL,
-  `users_sex` int(1) NOT NULL,
-  `users_birth_date` varchar(32) NOT NULL,
-  `users_adv_info` varchar(1024) NOT NULL,
-  `users_img` varchar(256) NOT NULL,
-  `users_verify_phone` int(1) NOT NULL,
-  `users_premium` int(1) NOT NULL,
-  PRIMARY KEY (`users_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- Data exporting was unselected.
 
 
 -- Dumping structure for table high_load.users_posts_like
