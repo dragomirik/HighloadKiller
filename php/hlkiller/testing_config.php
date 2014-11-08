@@ -17,6 +17,9 @@ abstract class testing_config {
 		'startLikesEach'        =>  10,
 		'endLikesEach'          =>  20,
 
+                'startFriendsEach'=>2,
+                'endFriendsEach'=>5,
+            
 		'partCount'             =>  5,
 		'finalUsersCount'       =>  10,
 		'categoriesCount'       =>  20

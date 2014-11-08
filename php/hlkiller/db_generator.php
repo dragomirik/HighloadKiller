@@ -51,7 +51,8 @@ class db_generator {
         $endCommentsEach = $config['endCommentsEach'];
         $startLikesEach = $config['startLikesEach'];
         $endLikesEach = $config['endLikesEach'];
-
+        $startFriendsEach = $config['startFriendsEach'];
+        $endFriendsEach = $config['endFriendsEach'];
 
         $partCount = $config['partCount'];
         
@@ -93,12 +94,14 @@ class db_generator {
         for ($user_part_first_id=$startUsers; $user_part_first_id<=$finalUsersCount; $user_part_first_id+=$partCount) {
 
             $user_insert_values_arr = array();
+            $users_temp_ids = array();
             $following_insert_values_arr = array();
 
             $user_part_last = $user_part_first_id+$partCount;
             // Add Users
             for($user_id=$user_part_first_id; $user_id < $user_part_last; $user_id++) {
                 $user_insert_values_arr[] = \annex::set_fields($tables['users'],$user_id);
+                $users_temp_ids[] = $user_id;
             }
 
 
@@ -106,14 +109,21 @@ class db_generator {
                 'table'=>'users',
                 'values'=>$user_insert_values_arr
             ));
-
-            //Add following
+            $new_tenp_ids = $users_temp_ids;
             for($user_id=$user_part_first_id; $user_id<$user_part_last; $user_id++) {
-                $following_insert_values_arr[] = \annex::set_fields($tables['rel_users_following'],$user_id,get_primary_value('users_id',$user_insert_values_arr));
+                $add_friend_count= rand($startFriendsEach, $endFriendsEach);
+                for($friendsEach=$startFriendsEach; $friendsEach<=$add_friend_count; $friendsEach++) {
+                    $friedSupplier = get_primary_value('users_id',$user_insert_values_arr);
+                    if(in_array($friedSupplier, $new_tenp_ids)) {
+                        $following_insert_values_arr[] = \annex::set_fields($tables['rel_users_following'],$user_id,$friedSupplier);
+                        if(($key = array_search($friedSupplier, $new_tenp_ids)) !== false) {
+                            unset($new_tenp_ids[$key]);
+                        }
+                    }
+                    
+                }
+                $new_tenp_ids = $users_temp_ids;
             }
-            /*echo '<pre>';
-                        print_r($user_insert_values_arr);
-                        echo '</pre>';*/
 
             \hlkiller_core::sql_gen('insert',array(
                 'table'=>'rel_users_following',

@@ -8,13 +8,26 @@ abstract class annex {
 	 *
 	 * @return string
 	 */
-	public static function gen_rnd_str($length = 10) {
-		$characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-		$randomString = '';
-		for ($i = 0; $i < $length; $i++) {
-			$randomString .= $characters [rand(0, strlen($characters) - 1)];
-		}
-		return $randomString;
+	public static function gen_rnd_str($length = 10, $special='none') {
+            
+            switch ($special) {
+                case 'name':
+                    $names = array('Dry', 'Hospitable', 'Skillful', 'Invincible', 'Reflective', 'Supreme', 'Divergent', 'Abject', 'Spiritual', 'Foregoing', 'Different', 'Messy', 'Tiny', 'Melodic', 'Snotty', 'Lackadaisical', 'Spiffy', 'Diligent', 'Tacky', 'Industrious', 
+                        'Spiritual', 'Foregoing', 'Different', 'Messy', 'Tiny', 'Melodic', 'Snotty', 'Lackadaisical', 'Spiffy', 'Diligent', 'Tacky', 'Industrious', 'Wanting', 'Cautious', 'Acceptable', 'Sassy', 'Various', 'Plant', 'Plastic', 'Dysfunctional', 'Ashamed', 'Exciting', 'Sick', 'Second-hand', 'Evasive');
+                    
+                    
+                    $random = $names[array_rand($names)].' '.$names[array_rand($names)];
+                    return $random;
+                    break;
+                default :
+                    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                    $randomString = '';
+                    for ($i = 0; $i < $length; $i++) {
+                            $randomString .= $characters[rand(0, strlen($characters) - 1)];
+                    }
+                    return $randomString;
+                    break;
+            }
 	}
         
         public static function gen_rnd_text() {
