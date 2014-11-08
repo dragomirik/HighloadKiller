@@ -35,9 +35,9 @@ class machine_gun {
 			LEFT JOIN `users` ON `users`.`users_id`=`posts`.`users_id`
 			LEFT JOIN (
 					SELECT
-						`posts_id`,
-						GROUP_CONCAT (`categories_name` ORDER BY `categories_name` ASC SEPARATOR '[;]') as `cats_names_string`,
-						GROUP_CONCAT (`categories_id`   ORDER BY `categories_name` ASC SEPARATOR '[;]') as `cats_id_string`
+						`posts`.`posts_id`,
+						GROUP_CONCAT(`categories_name` ORDER BY `categories_name` ASC SEPARATOR '[;]') as `cats_names_string`,
+						GROUP_CONCAT(`categories_id`   ORDER BY `categories_name` ASC SEPARATOR '[;]') as `cats_id_string`
 					FROM
 						`categories`
 					LEFT JOIN
@@ -46,13 +46,13 @@ class machine_gun {
 					GROUP BY
 						`posts_id`
 				) `posts_cats_strings` ON `posts_cats_strings`.`posts_id`=`posts`.`posts_id`
-			LEFT JOIN `rel_user_following` ON `rel_user_following`.`users_supplier_id`=`users`.`users_id`
+			LEFT JOIN `rel_users_following` ON `rel_users_following`.`users_supplier_id`=`users`.`users_id`
 			LEFT JOIN (
 					SELECT
 						`posts_id`,
-						`users_id` as `last_comments_users_id`,
+						`users`.`users_id` as `last_comments_users_id`,
 						`users`.`users_username` as `last_comments_username`,
-						MAX (`comments_id`),
+						MAX(`rel_users_posts_comments_id`),
 						`comments_text`
 					FROM
 						`rel_users_posts_comments`
@@ -65,7 +65,7 @@ class machine_gun {
 			LEFT JOIN (
 					SELECT
 						`posts_id`,
-						COUNT (`rel_users_posts_like_id`) as `likes_count`
+						COUNT(`rel_users_posts_like_id`) as `likes_count`
 					FROM
 						`users_posts_like`
 					GROUP BY
@@ -76,7 +76,7 @@ class machine_gun {
 		$tablename = 'posts';
 		$conditions = "
 
-			`rel_user_following`.`users_supplier_id`='$current_user_id'
+			`rel_users_following`.`users_supplier_id`='$current_user_id'
 
 		";
 
