@@ -39,8 +39,7 @@ class db_generator {
 
     public function generate_fish ($config) {
         $start = microtime(TRUE);
-        //$this->clear_db();
-        //return;
+        
         $tables=\config::getModel();
 
         $startPostsEach = $config['startPostsEach'];
@@ -66,19 +65,25 @@ class db_generator {
         $rel_like_posts_insert_arr = array();
 
         $categories_insert_arr = array();
-        $categories_id_arr = array();
 
-        $post_id = 1;
+        if($_SESSION['exist']=='1') {
+            
+        } else {
+            $post_id = 1;
 
-        for ($i=1; $i<=$categoriesCount; $i++) {
-            $categories_insert_arr[] = \annex::set_fields($tables['categories'],$i);
-            $categories_id_arr[] = $i;
+            for ($i=1; $i<=$categoriesCount; $i++) {
+                $categories_insert_arr[] = \annex::set_fields($tables['categories'],$i);
+            }
+            $_SESSION['categories_arr'] = json_encode($categories_insert_arr);
+
+            \hlkiller_core::sql_gen('insert',array(
+                'table'=>'categories',
+                'values'=>$categories_insert_arr
+            ));
         }
-
-        \hlkiller_core::sql_gen('insert',array(
-            'table'=>'categories',
-            'values'=>$categories_insert_arr
-        ));
+        
+        
+        
 
         for ($user_part_first_id=1; $user_part_first_id<=$finalUsersCount; $user_part_first_id+=$partCount) {
 
