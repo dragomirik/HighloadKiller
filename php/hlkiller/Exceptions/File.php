@@ -1,3 +1,3 @@
 <?php
 namespace Exceptions;
-class File extends Exception {}
+class File extends \Exception {}
