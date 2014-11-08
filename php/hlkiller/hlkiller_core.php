@@ -1,5 +1,5 @@
 <?php
-class hlkiller_core {
+abstract class hlkiller_core {
 	public static $db;
 
 	/**
