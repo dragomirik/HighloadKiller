@@ -18,7 +18,7 @@ abstract class hlkiller_core
         );
 
         // check connect
-        if (mysqli_connect_errno())
+        if (self::$db->connect_errno)
             die ('MySQLi cann\'t connect with DataBase');
     }
 
