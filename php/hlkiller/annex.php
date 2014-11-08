@@ -53,7 +53,7 @@ abstract class annex {
                             $result[$key] = rand(1, 100);
                             break;
                         case 'time':
-                            $result[$key] = time(); //@TODO: change
+                            $result[$key] = time()-  rand(1000, 864000); //@TODO: change
                             break;
                         case 'string':
                             $result[$key] = self::gen_rnd_str($value['length']);
