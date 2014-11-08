@@ -76,7 +76,7 @@ class machine_gun {
 		$tablename = 'posts';
 		$conditions = "
 
-			`rel_users_following`.`users_supplier_id`='$current_user_id'
+			`rel_users_following`.`users_follower_id`='$current_user_id'
 
 		";
 
@@ -90,12 +90,12 @@ class machine_gun {
 			WHERE
 				$conditions
 			LIMIT
-				0, 10
+				0, 20
 		";
 		echo $query_text;
 		$db = \hlkiller_core::db ();
 		$result = $db->query ($query_text);
-		\annex::showArray($result->fetch_assoc ());
+		\annex::showArray($result->fetch_all ());
 	}
 	public function make_mixed_attack () {}
 	public function high_load_emulation () {}

@@ -17,7 +17,7 @@ abstract class annex {
 		return $randomString;
 	}
         
-        public function gen_rnd_text() {
+        public static function gen_rnd_text() {
             return 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vestibulum ipsum a justo tempus molestie. '
             . 'Vestibulum condimentum sapien quis eros gravida, a mattis nibh posuere. Curabitur nec pretium dui. '
                     . 'Suspendisse eget turpis nisl. Nunc lacus eros, dictum ut porta id, aliquet at velit. '
