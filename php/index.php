@@ -46,7 +46,7 @@ function ajax_route ($request) {
 			break;
 		case 'add_structure_dump' : {
 			$db_generator = new \db_generator ();
-			$db_generator->add_structure_dump();
+			$db_generator->add_structure_dump($_GET ['filename']);
 		}
 			break;
 		case 'make_select_attack' : {
