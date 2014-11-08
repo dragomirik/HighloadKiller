@@ -38,7 +38,9 @@ class db_generator {
 
 
 	public function generate_fish ($config) {
-                $tables=$config['tables'];
+                $this->clear_db();
+                //return;
+                $tables=\config::getModel();
                 
                 $startPostsEach = $config['startPostsEach'];
                 $endPostsEach = $config['endPostsEach'];
@@ -49,7 +51,10 @@ class db_generator {
                 $startLikesEach = $config['startLikesEach'];
                 $endLikesEach = $config['endLikesEach'];
                 
-                        
+                
+                $partCount = $config['partCount'];
+                $finalUsersCount = $config['finalUsersCount'];
+                $categoriesCount = $config['categoriesCount'];
                 
                 $user_insert_values_arr = array();
                 $following_insert_values_arr = array();
@@ -59,53 +64,127 @@ class db_generator {
                 $rel_comments_posts_insert_arr = array();
                 $rel_like_posts_insert_arr = array();
                 
-                for ($user_part_first_id=1; $user_part_first_id<=$config['final_users_count']; $user_part_first_id+=$config['part_count']) {
+                $categories_insert_arr = array();
+                $categories_id_arr = array();
+                
+                $post_id = 1;
+                
+                for ($i=1; $i<=$categoriesCount; $i++) {
+                        $categories_insert_arr[] = \annex::set_fields($tables['categories'],$i);
+                        $categories_id_arr[] = $i;
+                }
+                
+                \hlkiller_core::sql_gen('insert',array(
+                    'table'=>'categories',
+                    'values'=>$categories_insert_arr
+                ));
+                
+                for ($user_part_first_id=1; $user_part_first_id<=$finalUsersCount; $user_part_first_id+=$partCount) {
 	
-                    $user_part_last = $user_part_first_id+$config['part_count'];
+                    $user_insert_values_arr = array();
+                    $following_insert_values_arr = array();
+                    
+                    
+                    
+                    $user_part_last = $user_part_first_id+$partCount;
                     // Add Users
                     for($user_id=$user_part_first_id; $user_id<$user_part_last; $user_id++) {
                         $user_insert_values_arr[] = \annex::set_fields($tables['users'],$user_id);
                     }
+                    
+                    
+                    \hlkiller_core::sql_gen('insert',array(
+                        'table'=>'users',
+                        'values'=>$user_insert_values_arr
+                    ));
+                    
                     //Add following
                     for($user_id=$user_part_first_id; $user_id<$user_part_last; $user_id++) {
-                            $following_insert_values_arr[] = \annex::set_fields($tables['rel_users_following'],$user_id,array_rand($user_insert_values_arr));
+                            $following_insert_values_arr[] = \annex::set_fields($tables['rel_users_following'],$user_id,get_primary_value('users_id',$user_insert_values_arr));
                     }
+                    /*echo '<pre>';
+                                print_r($user_insert_values_arr);
+                                echo '</pre>';*/
+                    
+                    \hlkiller_core::sql_gen('insert',array(
+                        'table'=>'rel_users_following',
+                        'values'=>$following_insert_values_arr
+                    ));
+                    
 
                     // Add user posts
                     for($user_id=$user_part_first_id; $user_id<$user_part_last; $user_id++) {
-
+                        
+                        $posts_insert_values_arr = array();
+                        $rel_categories_posts_insert_arr = array();
+                        $add_comments_rel_count = array();
+                        $rel_comments_posts_insert_arr = array();
+                        $rel_like_posts_insert_arr = array();
+                        
+                        
                         $add_post_count = rand($startPostsEach, $endPostsEach);
 
                         for($i=$startPostsEach;$i<=$add_post_count;$i++) {
                             // Add Post
-                            $posts_insert_values_arr[] = \annex::set_fields($tables['posts'],$user_id,array_rand($user_insert_values_arr));
-                                    //Array(‘user_id’ => user_id, `post_id`=>post_id... ) 
+                            $posts_insert_values_arr[] = \annex::set_fields($tables['posts'],$post_id,get_primary_value('users_id',$user_insert_values_arr));
                             $post_id++;
 
                             // Add Categories Relations
                             $add_categories_rel_count = rand($startCategoriesEach, $endCategoriesEach);
                             for($rel_count=$startCategoriesEach; $rel_count<=$endCategoriesEach; $rel_count++) {
-                                $rel_categories_posts_insert_arr[] = \annex::set_fields($tables['rel_posts_categories'],$post_id,array_rand($user_insert_values_arr));
+                                $rel_categories_posts_insert_arr[] = \annex::set_fields($tables['rel_posts_categories'],$post_id,get_primary_value('categories_id',$categories_insert_arr));
                                         //Array(post_id, rand_from_array(category_id))
                             }
                             
                             // Add Post Comments
                             $add_comments_rel_count = rand($startCommentsEach, $endCommentsEach);
                             for($rel_count=$startCategoriesEach; $rel_count<=$endCategoriesEach; $rel_count++) {
-                                $rel_comments_posts_insert_arr[] = \annex::set_fields($tables['rel_users_posts_comments'],$post_id,array_rand($user_insert_values_arr));
+                                $rel_comments_posts_insert_arr[] = \annex::set_fields($tables['rel_users_posts_comments'],get_primary_value('users_id',$user_insert_values_arr),$post_id);
                                         //Array(post_id, user_insert_values_arr[rand_this()], comment_text)
                             }
                             
                             // Add Post Likes
                             $add_like_rel_count = rand($startLikesEach, $endLikesEach);
                              for($rel_count=$startCategoriesEach; $rel_count<=$endCategoriesEach; $rel_count++) {
-                                 $rel_like_posts_insert_arr[] = \annex::set_fields($tables['rel_users_posts_comments'],$post_id,array_rand($user_insert_values_arr));
+                                 $rel_like_posts_insert_arr[] = \annex::set_fields($tables['users_posts_like'],get_primary_value('users_id',$user_insert_values_arr),$post_id);
                                  //Array(post_id, user_insert_values_arr[rand_this()], like_time)
                              }
                         }
+                        
+                        \hlkiller_core::sql_gen('insert',array(
+                            'table'=>'posts',
+                            'delayed'=>TRUE,// DELAYED
+                            'values'=>$posts_insert_values_arr
+                        ),true);
+                        
+                        \hlkiller_core::sql_gen('insert',array(
+                            'table'=>'rel_posts_categories',
+                            'values'=>$rel_categories_posts_insert_arr
+                        ),true);
+                        
+                        \hlkiller_core::sql_gen('insert',array(
+                            'table'=>'rel_users_posts_comments',
+                            'values'=>$rel_comments_posts_insert_arr
+                        ),true);
+                        \hlkiller_core::sql_gen('insert',array(
+                            'table'=>'users_posts_like',
+                            'values'=>$rel_like_posts_insert_arr
+                        ),true);
                     }
                 }
                 
+                /*echo '<pre>';
+                print_r($user_insert_values_arr);
+                print_r($following_insert_values_arr);
+                print_r($posts_insert_values_arr);
+                print_r($rel_categories_posts_insert_arr);
+                print_r($add_comments_rel_count);
+                print_r($rel_comments_posts_insert_arr);
+                print_r($rel_like_posts_insert_arr);
+                print_r($categories_insert_arr);
+                print_r($categories_id_arr);
+                echo '</pre>';
+                */
             /*
             
 		for ($i = 0; $i < $php_multiplier; $i ++) {
@@ -127,11 +206,15 @@ class db_generator {
              */
 
 	}
+        
+        
 	public function clear_db () {
 		foreach(\config::getTables() as $table) {
 			try {
-				$sql = "TRUNCATE TABLE `".$table['TABLE_NAME']."`";
-				$result = \hlkiller_core::db ()->query($sql);
+				//$sql = "TRUNCATE TABLE `".$table['TABLE_NAME']."`";
+				$sql = "DELETE FROM `".$table['TABLE_NAME']."`";
+                                    
+                                $result = \hlkiller_core::db ()->query($sql);
 				if ($result === false) {
 					throw new \Exceptions\MySQLQuery ('Mysqli died.');
 				}

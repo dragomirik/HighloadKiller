@@ -22,7 +22,7 @@
 					'primary'   =>  true
 				),
 				'users_username' => array(
-					'length'    =>  100,
+					'length'    =>  20,
 					'type'      =>  'string'
 				),
 				'users_password' => array(
@@ -46,7 +46,8 @@
 					'primary'   =>  true
 				),
 				'users_id' => array (
-					'type'      =>  'int'
+					'type'      =>  'int',
+                                        'fk'=>true
 				),
 				'posts_created_time' => array (
 					'type'      =>  'time'
@@ -60,30 +61,34 @@
 				)
 			),
 			'users_posts_like' => array (
-				'rel_users_posts_like_id' => array (
+				/*'rel_users_posts_like_id' => array (
 					'type'      =>  'int',
 					'primary'   =>  true
-				),
+				),*/
 				'users_id' => array (
-					'type'      =>  'int'
+					'type'      =>  'int',
+                                        'fk'=>true
 				),
 				'posts_id' => array (
-					'type'      =>  'int'
+					'type'      =>  'int',
+                                        'fk'=>true
 				),
 				'rel_users_posts_like_time' => array (
 					'type'      =>  'time'
 				)
 			),
 			'rel_users_posts_comments' => array (
-				'rel_users_posts_comments_id' => array (
+				/*'rel_users_posts_comments_id' => array (
 					'type'      =>  'int',
 					'primary'   =>  true
-				),
+				),*/
 				'users_id' => array (
-					'type'      =>  'int'
+					'type'      =>  'int',
+                                        'fk'=>true
 				),
 				'posts_id' => array (
-					'type'      =>  'int'
+					'type'      =>  'int',
+                                        'fk'=>true
 				),
 				'comments_text' => array (
 					'type'      =>  'text'
@@ -93,30 +98,35 @@
 				)
 			),
 			'rel_users_following' => array (
-				'following_id' => array (
+				/*'following_id' => array (
 					'type'      =>  'int',
 					'primary'   =>  true
-				),
+				),*/
 				'users_follower_id' => array (
-					'type'      =>  'int'
+					'type'      =>  'int',
+                                        'fk'=>true
 				),
 				'users_supplier_id' => array (
-					'type'      =>  'int'
+					'type'      =>  'int',
+                                        'fk'=>true
 				),
 				'following_time' => array (
 					'type'      =>  'time'
 				)
 			),
 			'rel_posts_categories' => array (
-				'posts_categories_id' => array (
+				/*'posts_categories_id' => array (
 					'type'      =>  'int',
 					'primary'   =>  true
-				),
+				),*/
 				'posts_id' => array (
-					'type'      =>  'int'
+					'type'      =>  'int',
+                                        'fk'=>true
+                                    
 				),
 				'categories_id' => array (
-					'type'      =>  'int'
+					'type'      =>  'int',
+                                        'fk'=>true
 				)
 			)
 		);
