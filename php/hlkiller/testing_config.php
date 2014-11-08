@@ -26,9 +26,9 @@ abstract class testing_config {
 	//max select attacks
 		'current_user_id'       =>  1,
 				// user id
-		'count'                 =>  20,
+		'count'                 =>  20
 				// query limits count
-		'times'                 =>  100
+		//'times'                 =>  100
 				// request times
 	);
 } 

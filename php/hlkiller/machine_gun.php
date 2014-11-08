@@ -183,7 +183,8 @@ class machine_gun {
 	public function get_statistics () {}
 
 	public function run_select ($query_text) {
-		$times = (int) \testing_config::$select ['times'];
+		//$times = (int) \testing_config::$select ['times'];
+		$times = $_GET ['times'];
 		$db = \hlkiller_core::db ();
 		$start_time = microtime (2);
 		for ($i = 0; $i < $times; $i++){
