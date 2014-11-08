@@ -47,13 +47,16 @@ class db_generator {
 		$mysql_multiplier = (int) $mysql_multiplier;
 		for ($i = 0; $i < $php_multiplier; $i ++) {
 			try {
-				$result = \hlkiller_core::db ()->multi_query (
-					"DECLARE i INT DEFAULT $mysql_multiplier;
-						WHILE i>0 DO
-								INSERT ...;
-							SET i=i-1;
-						END WHILE;"
-				);
+				/*
+					 $result = \hlkiller_core::db ()->multi_query (
+						"DECLARE i INT DEFAULT $mysql_multiplier;
+							WHILE i>0 DO
+									INSERT ...;
+								SET i=i-1;
+							END WHILE;"
+					);
+				*/
+				#--test
 				if ($result === true) {
 					throw new \Exceptions\MySQLQuery (
 						'Mysqli died. '.(($i + 1) / $php_multiplier).'% completed'
