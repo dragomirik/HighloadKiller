@@ -28,7 +28,7 @@ abstract class testing_config {
 				// user id
 		'count'                 =>  20,
 				// query limits count
-		'times'                 =>  1
+		'times'                 =>  100
 				// request times
 	);
 } 
