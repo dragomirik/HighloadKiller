@@ -92,13 +92,16 @@ class machine_gun {
 			LIMIT
 				0, 20
 		";
-		echo $query_text;
+		//echo $query_text;
 		$db = \hlkiller_core::db ();
+		$start_time = microtime (2);
 		$result = $db->query ($query_text);
 		$result_array = array ();
 		while ($tmp_array = $result->fetch_assoc ()) {
 			$result_array [] = $tmp_array;
 		}
+		$end_time = microtime (2);
+		echo $end_time - $start_time;
 		\annex::showArray($result_array);
 	}
 	public function make_mixed_attack () {}
