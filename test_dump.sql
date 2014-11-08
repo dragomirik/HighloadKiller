@@ -1,20 +1,3 @@
--- --------------------------------------------------------
--- Host:                         localhost
--- Server version:               5.6.20 - MySQL Community Server (GPL)
--- Server OS:                    Win32
--- HeidiSQL Version:             8.3.0.4694
--- --------------------------------------------------------
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET NAMES utf8 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-
--- Dumping database structure for high_load
-DROP DATABASE IF EXISTS `high_load`;
-CREATE DATABASE IF NOT EXISTS `high_load` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE `high_load`;
-
 
 -- Dumping structure for table high_load.categories
 DROP TABLE IF EXISTS `categories`;
@@ -141,8 +124,3 @@ CREATE TABLE IF NOT EXISTS `users_posts_like` (
   CONSTRAINT `rel_users_posts_like_posts_id` FOREIGN KEY (`posts_id`) REFERENCES `posts` (`posts_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `rel_users_posts_like_users_id` FOREIGN KEY (`users_id`) REFERENCES `users` (`users_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- Data exporting was unselected.
-/*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
-/*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
