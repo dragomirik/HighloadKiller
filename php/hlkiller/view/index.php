@@ -10,8 +10,12 @@
 				<div class="btn btn-large top_btn hl_btn">High load</div>
 				</br></br>
 
-				<div class="btn btn-large input_btn gen_fish">Generate fish</div>
-				<div class="btn btn-large clear_db">Clear DataBase</div>
+				<div class="generete_block">
+					
+					<div class="btn btn-large input_btn gen_fish">Generate fish</div>
+					<div class="btn btn-large clear_db">Clear DataBase</div>
+					
+				</div>
 	
 				<div class="high_load_block hidden">
 						<a class="btn btn-large high_load_btn max_select_attack">Max SELECT Attack #1</a>
