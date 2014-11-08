@@ -53,7 +53,7 @@ class db_generator {
 
 
         $partCount = $config['partCount'];
-        $finalUsersCount = $config['finalUsersCount'];
+        
         $categoriesCount = $config['categoriesCount'];
 
         $user_insert_values_arr = array();
@@ -65,12 +65,17 @@ class db_generator {
         $rel_like_posts_insert_arr = array();
 
         $categories_insert_arr = array();
-
-        if($_SESSION['exist']=='1') {
-            
+        $startUsers = 1;
+        
+        if(isset($_SESSION['exist']) && $_SESSION['exist']=='1') {
+            $post_id = $_SESSION['post_id'];
+            $startUsers = $_SESSION['user_start'];
+            $categories_insert_arr = json_decode($_SESSION['categories_arr'], true);
+            //var_dump($categories_insert_arr);
+            //return ;
         } else {
             $post_id = 1;
-
+            
             for ($i=1; $i<=$categoriesCount; $i++) {
                 $categories_insert_arr[] = \annex::set_fields($tables['categories'],$i);
             }
@@ -81,16 +86,13 @@ class db_generator {
                 'values'=>$categories_insert_arr
             ));
         }
-        
-        
+        $finalUsersCount = $startUsers+$config['finalUsersCount']-1;
         
 
-        for ($user_part_first_id=1; $user_part_first_id<=$finalUsersCount; $user_part_first_id+=$partCount) {
+        for ($user_part_first_id=$startUsers; $user_part_first_id<=$finalUsersCount; $user_part_first_id+=$partCount) {
 
             $user_insert_values_arr = array();
             $following_insert_values_arr = array();
-
-
 
             $user_part_last = $user_part_first_id+$partCount;
             // Add Users
@@ -225,6 +227,10 @@ class db_generator {
             $rel_like_posts_insert_arr = array();
             $counter=0;
         }
+        $_SESSION['post_id'] = $post_id;
+        $_SESSION['user_start'] = $finalUsersCount+1;
+        $_SESSION['exist'] = '1';
+        
         $finish = microtime(TRUE);
         $totaltime = $finish - $start;
 
@@ -235,7 +241,7 @@ class db_generator {
 
     public function clear_db () {
         
-        $_SESSION['q'] = 0;
+        $_SESSION['exist'] = '0';
         foreach(\config::getTables() as $table) {
             try {
                 //$sql = "TRUNCATE TABLE `".$table['TABLE_NAME']."`";
