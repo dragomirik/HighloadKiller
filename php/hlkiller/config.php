@@ -15,7 +15,7 @@
 		 *
 		 * @var array
 		 */
-		public static $tables  = array(
+		private static $tables  = array(
 			'users' => array(
 				'users_id' => array(
 					'type'      =>  'int',
@@ -120,4 +120,8 @@
 				)
 			)
 		);
+
+		public static function getModel () {
+			return self::$tables;
+		}
 	}

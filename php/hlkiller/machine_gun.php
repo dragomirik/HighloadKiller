@@ -1,11 +1,18 @@
 <?php
 class machine_gun {
 	public function init () {}
-	public function make_select_attack () {
+
+	public function make_select_attack ($count = 10) {
 		$query_text = '
 
 			SELECT
-				`i
+				`users_id`,
+				`user_name`,
+				`users_password`
+			FROM
+				`users`
+			WHERE
+				1
 
 		';
 		\hlkiller_core::db()->query ($query_text);
