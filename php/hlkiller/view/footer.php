@@ -16,7 +16,7 @@
 	
 	$('.gen_fish').on('click', function() {
 		
-			$.get('/HighLoadKiller/php/index.php?do=generate_fish', function(data){
+			$.get('index.php?do=generate_fish', function(data){
 			
 				$('#result_div').html(data);
 			
@@ -25,7 +25,7 @@
 	
 	$('.clear_db').on('click', function() {
 		
-			$.get('/HighLoadKiller/php/index.php?do=clear_db', function(data){
+			$.get('index.php?do=clear_db', function(data){
 			
 				$('#result_div').html(data);
 			
@@ -34,7 +34,7 @@
 	
 	$('.max_select_attack').on('click', function() {
 	
-		$.get('/HighLoadKiller/php/index.php?do=make_select_attack', function(data){
+		$.get('index.php?do=make_select_attack', function(data){
 			
 			$('#result_div').html(data);
 			
