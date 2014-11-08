@@ -23,7 +23,7 @@
 			
 					$('#result_div').append('<a onclick="$(this).next().toggle();">Generate Request #'+generate_count+'</a><div class="box_shadow2 p10" style="display:none;">'+data+'</div> - <b class="green">Ok!</b><br/>');
 					generate_count++;
-					if (generate_count < parseInt($('.steps_count').val() && generate_count < 1000000))
+					if (generate_count < parseInt($('.steps_count').val()) && generate_count < 1000000)
 						$('.gen_fish').click();
 			
 				});
