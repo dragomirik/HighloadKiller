@@ -1,5 +1,4 @@
 
--- Dumping structure for table high_load.users
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE IF NOT EXISTS `users` (
   `users_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -21,10 +20,6 @@ CREATE TABLE IF NOT EXISTS `users` (
   PRIMARY KEY (`users_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Data exporting was unselected.
-
-
--- Dumping structure for table high_load.categories
 DROP TABLE IF EXISTS `categories`;
 CREATE TABLE IF NOT EXISTS `categories` (
   `categories_id` int(9) unsigned NOT NULL AUTO_INCREMENT,
@@ -35,10 +30,6 @@ CREATE TABLE IF NOT EXISTS `categories` (
   KEY `categories_users_id` (`categories_pid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Data exporting was unselected.
-
-
--- Dumping structure for table high_load.posts
 DROP TABLE IF EXISTS `posts`;
 CREATE TABLE IF NOT EXISTS `posts` (
   `posts_id` int(9) unsigned NOT NULL AUTO_INCREMENT,
@@ -56,10 +47,6 @@ CREATE TABLE IF NOT EXISTS `posts` (
   CONSTRAINT `posts_users_id_fk` FOREIGN KEY (`users_id`) REFERENCES `users` (`users_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Data exporting was unselected.
-
-
--- Dumping structure for table high_load.rel_posts_categories
 DROP TABLE IF EXISTS `rel_posts_categories`;
 CREATE TABLE IF NOT EXISTS `rel_posts_categories` (
   `posts_categories_id` int(9) unsigned NOT NULL AUTO_INCREMENT,
@@ -72,10 +59,6 @@ CREATE TABLE IF NOT EXISTS `rel_posts_categories` (
   CONSTRAINT `rel_posts_categories_post_id` FOREIGN KEY (`posts_id`) REFERENCES `posts` (`posts_id`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Data exporting was unselected.
-
-
--- Dumping structure for table high_load.rel_users_following
 DROP TABLE IF EXISTS `rel_users_following`;
 CREATE TABLE IF NOT EXISTS `rel_users_following` (
   `following_id` int(9) NOT NULL AUTO_INCREMENT,
@@ -90,10 +73,6 @@ CREATE TABLE IF NOT EXISTS `rel_users_following` (
   CONSTRAINT `rel_users_following_supplier_id` FOREIGN KEY (`users_supplier_id`) REFERENCES `users` (`users_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Data exporting was unselected.
-
-
--- Dumping structure for table high_load.rel_users_posts_comments
 DROP TABLE IF EXISTS `rel_users_posts_comments`;
 CREATE TABLE IF NOT EXISTS `rel_users_posts_comments` (
   `rel_users_posts_comments_id` int(9) unsigned NOT NULL AUTO_INCREMENT,
@@ -108,12 +87,6 @@ CREATE TABLE IF NOT EXISTS `rel_users_posts_comments` (
   CONSTRAINT `rel_users_posts_comments_users_id` FOREIGN KEY (`users_id`) REFERENCES `users` (`users_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Data exporting was unselected.
-
-
-
-
--- Dumping structure for table high_load.users_posts_like
 DROP TABLE IF EXISTS `users_posts_like`;
 CREATE TABLE IF NOT EXISTS `users_posts_like` (
   `rel_users_posts_like_id` int(9) unsigned NOT NULL AUTO_INCREMENT,
