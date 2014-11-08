@@ -1,5 +1,7 @@
 <?php
 class config {
+	const VIEW_PATH = 'hlkiller/view';
+
 	public static $db_server     = '127.0.0.1';
 	public static $db_username   = 'root';
 	public static $db_userpass   = '';
