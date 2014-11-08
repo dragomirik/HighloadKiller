@@ -27,14 +27,45 @@ class db_generator {
 		$i = 0;
 		while ($b = strpos($buf, ';', $a + 1)) {
 			$i++;
-			$a = substr($buf, $a + 1,$b - $a);
-			\hlkiller_core::$db->query($a);
+			try {
+				$a = substr($buf, $a + 1,$b - $a);
+				$result = \hlkiller_core::db ()->query($a);
+				if ($result === true) {
+					throw new \Exceptions\MySQLQuery ('Mysqli died.');
+				}
+			}
+			catch (\Exceptions\MySQLQuery $e) {
+				die ($e->getMessage());
+			}
 			$a = $b;
 		}
 
 		exit ($i.' tables loaded');
 	}
 
-	public function generate_fish () {}
+	public function generate_fish ($php_multiplier = 10, $mysql_multiplier = 100) {
+		$mysql_multiplier = (int) $mysql_multiplier;
+		for ($i = 0; $i < $php_multiplier; $i ++) {
+			try {
+				$result = \hlkiller_core::db ()->multi_query (
+					"DECLARE i INT DEFAULT $mysql_multiplier;
+						WHILE i>0 DO
+								INSERT ...;
+							SET i=i-1;
+						END WHILE;"
+				);
+				if ($result === true) {
+					throw new \Exceptions\MySQLQuery (
+						'Mysqli died. '.(($i + 1) / $php_multiplier).'% completed'
+					);
+				}
+			}
+			catch (\Exceptions\MySQLQuery $e) {
+				die ($e->getMessage());
+			}
+			sleep (1);
+		}
+
+	}
 	public function clear_db () {}
 }

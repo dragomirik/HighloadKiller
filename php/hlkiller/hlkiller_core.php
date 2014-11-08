@@ -1,6 +1,6 @@
 <?php
 abstract class hlkiller_core {
-	public static $db;
+	private static $db;
 
 	/**
 	 * db connect by mysqli
@@ -24,6 +24,10 @@ abstract class hlkiller_core {
 	 */
 	public static function disconnect () {
 		self::$db->close ();
+	}
+
+	public static function db () {
+		return self::$db;
 	}
 
 	/**
