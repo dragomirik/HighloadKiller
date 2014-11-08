@@ -89,7 +89,8 @@ class machine_gun {
 			$JOINs
 			WHERE
 				$conditions
-
+			LIMIT
+				0, 10
 		";
 		echo $query_text;
 		$db = \hlkiller_core::db ();
