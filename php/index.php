@@ -19,6 +19,8 @@ function get_primary_value($field,array $array) {
 function ajax_route ($request) {
 	switch ($request) {
         case 'generate_fish' : {
+	        if (isset ($_GET ['users_by_step']))
+		        \testing_config::$gen_fish ['partCount'] = $_GET ['users_by_step'];
             $db_generator = new \db_generator ();
             $db_generator->generate_fish();
         }
