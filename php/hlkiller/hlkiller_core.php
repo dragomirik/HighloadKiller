@@ -29,4 +29,42 @@ abstract class hlkiller_core {
 	public static function db () {
 		return self::$db;
 	}
+        
+        public static function sql_gen($type, array $array,$dubug = false) {
+            switch ($type) {
+                case 'insert':
+                    $flag = FALSE;
+                    $q_arr = array();
+                    $fields = array();
+                    $table = $array['table'];
+                    
+                    foreach ($array['values'] as $row) {
+                        if(!$flag) {
+                            foreach ($row as $k=>$val) {
+                                $fields[]='`'.$k.'`';
+                            }
+                            $flag = TRUE;
+                        }
+                        $insert = array();
+                        foreach ($row as $val) {
+                            $insert[] = "'".$val."'";
+                        }
+                        
+                        $q_arr[] = '('.implode(', ', $insert).')';
+                    }
+                    $q = "INSERT INTO `$table` (".  implode(', ', $fields).") VALUES ".  implode(', ', $q_arr);
+                    echo $q."<br>";
+                    //$result = self::db()->query($q);
+                    
+//                    echo self::db()->affected_rows.' '.'<br><br>';
+//                    if($result===false) {
+//                        echo $table.' - >>>   '.$q.'<br><br>';
+//                    }
+                    
+                    break;
+                
+                case 'update':
+                    break;
+            }
+        }
 }
