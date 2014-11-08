@@ -22,6 +22,11 @@ function ajax_route ($request) {
 			$db_generator->clear_db();
 		}
 			break;
+		case 'add_structure_dump' : {
+			$db_generator = new \db_generator ();
+			$db_generator->add_structure_dump();
+		}
+			break;
 		case 'make_select_attack' : {
 			$machine_gun = new \machine_gun ();
 			$machine_gun ->make_select_attack();
