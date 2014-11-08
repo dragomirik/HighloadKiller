@@ -31,16 +31,18 @@
 			
 			});
 	});
-	
-	$('.max_select_attack').on('click', function() {
-	
-		$.get('index.php?do=make_select_attack', function(data){
-			
-			$('#result_div').html(data);
-			
+
+	  $('.max_select_attack').on('click', function() {
+		  $.get('index.php?do=make_select_attack&action=1', function(data){
+			  $('#result_div').html(data);
+		  });
+	  });
+
+	  $('.max_select_attack2').on('click', function() {
+		  $.get('index.php?do=make_select_attack&action=2', function(data){
+			  $('#result_div').html(data);
+		  });
 		});
-	
-	});
 
   
   });

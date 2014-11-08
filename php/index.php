@@ -20,23 +20,7 @@ function ajax_route ($request) {
 	switch ($request) {
         case 'generate_fish' : {
             $db_generator = new \db_generator ();
-
-            $config = array(
-                'startPostsEach'=>5,
-                'endPostsEach'=>15,
-                'startCategoriesEach'=>1,
-                'endCategoriesEach'=>5,
-                'startCommentsEach'=>1,
-                'endCommentsEach'=>4,
-                'startLikesEach'=>10,
-                'endLikesEach'=>20,
-
-                'partCount'=>5,
-                'finalUsersCount'=>10,
-                'categoriesCount'=>20
-            );
-
-            $db_generator->generate_fish($config);
+            $db_generator->generate_fish();
         }
             break;
 		case 'clear_db' : {
@@ -51,22 +35,19 @@ function ajax_route ($request) {
 			break;
 		case 'make_select_attack' : {
 			$machine_gun = new \machine_gun ();
-			$machine_gun ->make_select_attack();
-		}
-			break;
-		case 'make_mixed_attack' : {
-			$machine_gun = new \machine_gun ();
-			$machine_gun ->make_mixed_attack();
+			$func = 'make_select_attack';
+			if ($_GET ['action'] == '2') $func .= '2';
+			$machine_gun->run_select($machine_gun->$func ());
 		}
 			break;
 		case 'hight_load_emulation' : {
 			$machine_gun = new \machine_gun ();
-			$machine_gun ->high_load_emulation();
+			$machine_gun->high_load_emulation();
 		}
 			break;
 		case 'get_statistics' : {
 			$machine_gun = new \machine_gun ();
-			$machine_gun ->get_statistics();
+			$machine_gun->get_statistics();
 		}
 			break;
 	}

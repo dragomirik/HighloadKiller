@@ -19,7 +19,7 @@
 	
 				<div class="high_load_block hidden">
 						<a class="btn btn-large high_load_btn max_select_attack">Max SELECT Attack #1</a>
-						<a class="btn btn-large high_load_btn">Max SELECT Attack #2</a>
+						<a class="btn btn-large high_load_btn max_select_attack2">Max SELECT Attack #2</a>
 						</br></br>
 						<a class="btn btn-large high_load_btn">Mixed Attack #1</a>
 						<a class="btn btn-large high_load_btn">Mixed Attack #2</a>

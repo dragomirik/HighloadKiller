@@ -37,7 +37,8 @@ class db_generator {
     }
 
 
-    public function generate_fish ($config) {
+    public function generate_fish () {
+	    $config = \testing_config::$gen_fish;
         $start = microtime(TRUE);
         
         $tables=\config::getModel();
