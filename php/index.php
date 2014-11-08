@@ -34,7 +34,7 @@ function __autoload ($classname) {
 				break;
 			case 'hight_load_emulation' : {
 				$machine_gun = new \machine_gun ();
-				$machine_gun ->hight_load_emulation();
+				$machine_gun ->high_load_emulation();
 			}
 				break;
 			case 'get_statistics' : {
