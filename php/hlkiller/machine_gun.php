@@ -91,7 +91,10 @@ class machine_gun {
 				$conditions
 
 		";
-		\hlkiller_core::db()->query ($query_text);
+		echo $query_text;
+		$db = \hlkiller_core::db ();
+		$result = $db->query ($query_text);
+		\annex::showArray($result->fetch_assoc ());
 	}
 	public function make_mixed_attack () {}
 	public function high_load_emulation () {}

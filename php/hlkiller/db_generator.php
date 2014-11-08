@@ -1,8 +1,5 @@
 <?php
 class db_generator {
-	public function init () {
-
-	}
 
 	/**
 	 * db dump file import
@@ -23,9 +20,15 @@ class db_generator {
 		$sql = fread($handle, filesize($file_path));
 		fclose ($handle);
 
+		$db = &\hlkiller_core::db ();
 		try {
-			$result = \hlkiller_core::db ()->multi_query($sql);
-			if ($result === false) {
+			if ($db->multi_query($sql)) {
+				$i = 0;
+				do {
+					$i++;
+				} while ($db->next_result());
+			}
+			if ($db->errno) {
 				throw new \Exceptions\MySQLQuery ('Mysqli died.');
 			}
 		}
@@ -128,10 +131,11 @@ class db_generator {
 
 	}
 	public function clear_db () {
+		$db = &\hlkiller_core::db ();
 		foreach(\config::getTables() as $table) {
 			try {
 				$sql = "TRUNCATE TABLE `".$table['TABLE_NAME']."`";
-				$result = \hlkiller_core::db ()->query($sql);
+				$result = $db->query($sql);
 				if ($result === false) {
 					throw new \Exceptions\MySQLQuery ('Mysqli died.');
 				}
