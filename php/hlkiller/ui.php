@@ -31,7 +31,7 @@ class ui {
 	public static function get_view ($files) {
 		if (is_string ($files)) {
 			$filename = $files;
-			$files = [];
+			$files = array ();
 			$files ['template'] = $filename;
 		}
 		foreach ($files as $var_name => $filename) {
