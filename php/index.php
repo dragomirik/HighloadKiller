@@ -9,6 +9,8 @@ function __autoload($classname) {
 	include_once($filename);
 }
 
-\Application::run ();
+\hlkiller_core::connect();
 
-?>
+	\Application::run();
+
+\hlkiller_core::disconnect();
