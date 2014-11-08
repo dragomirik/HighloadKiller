@@ -11,7 +11,6 @@ class config {
                 'users_id'=> array(
                     'type'=>'int',
                     'primary'=>true
-                    
                     ),
                 'user_name'=>array(
                     'length'=>100,
