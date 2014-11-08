@@ -27,7 +27,7 @@
 				<div class="high_load_block hidden">
 				
 						<b class="white">Queries by request:</b>
-						<input class="query_php_push_count w40" value="10" /><br/>
+						<input class="query_php_push_count w40" value="1" /><br/>
 						
 						<b class="white">Requests by second:</b>
 						<input class="query_ajax_push_count w40" value="10" /><br/><br/>
