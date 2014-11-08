@@ -53,7 +53,7 @@ function ajax_route ($request) {
 		ajax_route ($_GET ['do']);
 	} else
 		// print index view
-		echo \hlkiller_core::get_index_view();
+		echo \ui::get_index_view();
 
 //db disconnect
 \hlkiller_core::disconnect();
