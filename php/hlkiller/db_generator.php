@@ -35,6 +35,7 @@ class db_generator {
 
 		exit ('Tables loaded');
 	}
+	
 
 	public function generate_fish ($config) {
                 $tables=$config['tables'];
