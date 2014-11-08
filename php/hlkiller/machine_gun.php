@@ -95,7 +95,11 @@ class machine_gun {
 		echo $query_text;
 		$db = \hlkiller_core::db ();
 		$result = $db->query ($query_text);
-		\annex::showArray($result->fetch_all ());
+		$result_array = array ();
+		while ($tmp_array = $result->fetch_assoc ()) {
+			$result_array [] = $tmp_array;
+		}
+		\annex::showArray($result_array);
 	}
 	public function make_mixed_attack () {}
 	public function high_load_emulation () {}
