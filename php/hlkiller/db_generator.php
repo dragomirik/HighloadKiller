@@ -23,24 +23,17 @@ class db_generator {
 		$buf = fread($handle, filesize($file_path));
 		fclose ($handle);
 
-		$a = 0;
-		$i = 0;
-		while ($b = strpos($buf, ';', $a + 1)) {
-			$i++;
-			try {
-				$a = substr($buf, $a + 1,$b - $a);
-				$result = \hlkiller_core::db ()->query($a);
-				if ($result === true) {
-					throw new \Exceptions\MySQLQuery ('Mysqli died.');
-				}
+		try {
+			$result = \hlkiller_core::db ()->multi_query($buf);
+			if ($result === false) {
+				throw new \Exceptions\MySQLQuery ('Mysqli died.');
 			}
-			catch (\Exceptions\MySQLQuery $e) {
-				die ($e->getMessage());
-			}
-			$a = $b;
+		}
+		catch (\Exceptions\MySQLQuery $e) {
+			die ($e->getMessage());
 		}
 
-		exit ($i.' tables loaded');
+		exit ('Tables loaded');
 	}
 
 	public function generate_fish ($config) {
