@@ -1,7 +1,7 @@
 <?php
 class config {
-	const DB_SERVER = '127.0.0.1';
-	const DB_USERNAME = 'root';
-	const DB_USERPASS = '';
-	const DB_NAME = 'killer_test';
+	public static $db_server     = '127.0.0.1';
+	public static $db_username   = 'root';
+	public static $db_userpass   = '';
+	public static $db_name       = 'killer_test';
 }
