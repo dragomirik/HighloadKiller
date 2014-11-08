@@ -183,24 +183,24 @@ class machine_gun {
 	public function get_statistics () {}
 
 	public function run_select ($query_text) {
-		$times = (int) \testing_config::$select ['times'];
-		try {
-			$db = \hlkiller_core::db ();
-			$start_time = microtime (2);
-			$result = $db->query ($query_text);
-			if ($db->errno) {
-				throw new \Exceptions\MySQLQuery ('Mysqli died. '.$db->errno.' : '.$db->error);
+		//$times = (int) \testing_config::$select ['times'];
+		$times = $_GET ['times'];
+		$db = \hlkiller_core::db ();
+		$start_time = microtime (2);
+		for ($i = 0; $i < $times; $i++){
+			try {
+					$result = $db->query ($query_text);
+					if ($db->errno) throw new \Exceptions\MySQLQuery ('Mysqli died. '.$db->errno.' : '.$db->error);
+					$result_array = array ();
+					while ($tmp_array = $result->fetch_assoc ())
+						$result_array [] = $tmp_array;
 			}
-			$result_array = array ();
-			while ($tmp_array = $result->fetch_assoc ()) {
-				$result_array [] = $tmp_array;
+			catch (\Exceptions\MySQLQuery $e) {
+				die ($e->getMessage());
 			}
-			$end_time = microtime (2);
-			echo $end_time - $start_time;
 		}
-		catch (\Exceptions\MySQLQuery $e) {
-			die ($e->getMessage());
-		}
+		$end_time = microtime (2);
+		echo $end_time - $start_time, '<br>';
 		\annex::showArray($result_array);
 	}
 }
