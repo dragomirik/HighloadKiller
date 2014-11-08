@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 define ('DIRSEP', DIRECTORY_SEPARATOR);
 define ('EXT', '.php');
 define ('PATH', dirname (__FILE__).DIRSEP);

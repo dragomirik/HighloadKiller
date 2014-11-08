@@ -187,82 +187,54 @@ class db_generator {
                 }
                 $counter++;
             }
-            var_dump(count($posts_insert_values_arr));
-                    var_dump(count($rel_categories_posts_insert_arr));
-                    var_dump(count($rel_comments_posts_insert_arr));
-                    var_dump(count($rel_like_posts_insert_arr));
-                    echo '<br><br>';
-                    \hlkiller_core::sql_gen('insert',array(
-                        'table'=>'posts',
-                        'delayed'=>TRUE,// DELAYED
-                        'values'=>$posts_insert_values_arr
-                    ),true);
+            if(!empty($posts_insert_values_arr)) {
+                \hlkiller_core::sql_gen('insert',array(
+                    'table'=>'posts',
+                    'delayed'=>TRUE,// DELAYED
+                    'values'=>$posts_insert_values_arr
+                ),true);
+            }
+             if(!empty($rel_categories_posts_insert_arr)) {
+                \hlkiller_core::sql_gen('insert',array(
+                    'table'=>'rel_posts_categories',
+                    'values'=>$rel_categories_posts_insert_arr
+                ),true);
+             }
+             if(!empty($rel_comments_posts_insert_arr)) {
+                \hlkiller_core::sql_gen('insert',array(
+                    'table'=>'rel_users_posts_comments',
+                    'values'=>$rel_comments_posts_insert_arr
+                ),true);
+             }
+             if(!empty($rel_like_posts_insert_arr)) {
+                \hlkiller_core::sql_gen('insert',array(
+                    'table'=>'users_posts_like',
+                    'values'=>$rel_like_posts_insert_arr
+                ),true);
+             }
 
-                    \hlkiller_core::sql_gen('insert',array(
-                        'table'=>'rel_posts_categories',
-                        'values'=>$rel_categories_posts_insert_arr
-                    ),true);
-
-                    \hlkiller_core::sql_gen('insert',array(
-                        'table'=>'rel_users_posts_comments',
-                        'values'=>$rel_comments_posts_insert_arr
-                    ),true);
-
-                    \hlkiller_core::sql_gen('insert',array(
-                        'table'=>'users_posts_like',
-                        'values'=>$rel_like_posts_insert_arr
-                    ),true);
-                    $posts_insert_values_arr = array();
-                    $rel_categories_posts_insert_arr = array();
-                    $add_comments_rel_count = array();
-                    $rel_comments_posts_insert_arr = array();
-                    $rel_like_posts_insert_arr = array();
-                    $counter=0;
+            $posts_insert_values_arr = array();
+            $rel_categories_posts_insert_arr = array();
+            $add_comments_rel_count = array();
+            $rel_comments_posts_insert_arr = array();
+            $rel_like_posts_insert_arr = array();
+            $counter=0;
         }
         $finish = microtime(TRUE);
         $totaltime = $finish - $start;
 
         echo "This script took ".$totaltime." seconds to run";
-        /*echo '<pre>';
-        print_r($user_insert_values_arr);
-        print_r($following_insert_values_arr);
-        print_r($posts_insert_values_arr);
-        print_r($rel_categories_posts_insert_arr);
-        print_r($add_comments_rel_count);
-        print_r($rel_comments_posts_insert_arr);
-        print_r($rel_like_posts_insert_arr);
-        print_r($categories_insert_arr);
-        print_r($categories_id_arr);
-        echo '</pre>';
-        */
-        /*
-
-    for ($i = 0; $i < $php_multiplier; $i ++) {
-        try {
-
-            #--test
-            if ($result === true) {
-                throw new \Exceptions\MySQLQuery (
-                    'Mysqli died. '.(($i + 1) / $php_multiplier).'% completed'
-                );
-            }
-        }
-        catch (\Exceptions\MySQLQuery $e) {
-            die ($e->getMessage());
-        }
-        sleep (1);
-    }
-         *
-         */
-
+       
     }
 
 
     public function clear_db () {
+        
+        $_SESSION['q'] = 0;
         foreach(\config::getTables() as $table) {
             try {
                 //$sql = "TRUNCATE TABLE `".$table['TABLE_NAME']."`";
-                $sql = "DROP TABLE `".$table['TABLE_NAME']."`";
+                $sql = "DROP TABLE IF EXISTS `".$table['TABLE_NAME']."`";
                 //$sql = "DELETE FROM `".$table['TABLE_NAME']."`";
                 $result = \hlkiller_core::db ()->query($sql);
                 if ($result === false) {
