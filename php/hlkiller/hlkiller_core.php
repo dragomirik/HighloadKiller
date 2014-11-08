@@ -15,7 +15,10 @@ class hlkiller_core {
 		self::$db->close ();
 	}
 
-	public static function get_view (array $data = array ()) {
+	public static function get_index_view () {
+		$files = array(
+			
+		);
 		return '0';
 	}
 }
