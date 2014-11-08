@@ -9,6 +9,12 @@ function __autoload ($classname) {
 	$filename = PATH.'hlkiller'.DIRSEP.$classname.EXT;
 	include_once ($filename);
 }
+
+function get_primary_value($field,array $array) {
+    return $array[array_rand($array)][$field];
+}
+
+
 // function for routing ajax queries
 function ajax_route ($request) {
 	switch ($request) {
@@ -25,8 +31,8 @@ function ajax_route ($request) {
                 'startLikesEach'=>10,
                 'endLikesEach'=>20,
 
-                'partCount'=>100,
-                'finalUsersCount'=>100,
+                'partCount'=>5,
+                'finalUsersCount'=>10,
                 'categoriesCount'=>20
             );
 

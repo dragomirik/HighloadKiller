@@ -122,8 +122,6 @@ class db_generator {
             for($user_id=$user_part_first_id; $user_id<$user_part_last; $user_id++) {
 
 
-
-
                 $add_post_count = rand($startPostsEach, $endPostsEach);
 
                 for($i=$startPostsEach;$i<=$add_post_count;$i++) {
@@ -189,6 +187,37 @@ class db_generator {
                 }
                 $counter++;
             }
+            var_dump(count($posts_insert_values_arr));
+                    var_dump(count($rel_categories_posts_insert_arr));
+                    var_dump(count($rel_comments_posts_insert_arr));
+                    var_dump(count($rel_like_posts_insert_arr));
+                    echo '<br><br>';
+                    \hlkiller_core::sql_gen('insert',array(
+                        'table'=>'posts',
+                        'delayed'=>TRUE,// DELAYED
+                        'values'=>$posts_insert_values_arr
+                    ),true);
+
+                    \hlkiller_core::sql_gen('insert',array(
+                        'table'=>'rel_posts_categories',
+                        'values'=>$rel_categories_posts_insert_arr
+                    ),true);
+
+                    \hlkiller_core::sql_gen('insert',array(
+                        'table'=>'rel_users_posts_comments',
+                        'values'=>$rel_comments_posts_insert_arr
+                    ),true);
+
+                    \hlkiller_core::sql_gen('insert',array(
+                        'table'=>'users_posts_like',
+                        'values'=>$rel_like_posts_insert_arr
+                    ),true);
+                    $posts_insert_values_arr = array();
+                    $rel_categories_posts_insert_arr = array();
+                    $add_comments_rel_count = array();
+                    $rel_comments_posts_insert_arr = array();
+                    $rel_like_posts_insert_arr = array();
+                    $counter=0;
         }
         $finish = microtime(TRUE);
         $totaltime = $finish - $start;
