@@ -20,11 +20,11 @@ class db_generator {
 			die ("Error (File: ".$e->getFile().", line ".
 				$e->getLine()."): ".$e->getMessage());
 		}
-		$buf = fread($handle, filesize($file_path));
+		$sql = fread($handle, filesize($file_path));
 		fclose ($handle);
 
 		try {
-			$result = \hlkiller_core::db ()->multi_query($buf);
+			$result = \hlkiller_core::db ()->multi_query($sql);
 			if ($result === false) {
 				throw new \Exceptions\MySQLQuery ('Mysqli died.');
 			}
@@ -127,5 +127,19 @@ class db_generator {
              */
 
 	}
-	public function clear_db () {}
+	public function clear_db () {
+		foreach(\config::getTables() as $table) {
+			try {
+				$sql = "TRUNCATE TABLE `".$table['TABLE_NAME']."`";
+				$result = \hlkiller_core::db ()->query($sql);
+				if ($result === false) {
+					throw new \Exceptions\MySQLQuery ('Mysqli died.');
+				}
+				//--test
+			}
+			catch (\Exceptions\MySQLQuery $e) {
+				die ($e->getMessage());
+			}
+		}
+	}
 }

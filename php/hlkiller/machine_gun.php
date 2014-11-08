@@ -3,18 +3,30 @@ class machine_gun {
 	public function init () {}
 
 	public function make_select_attack ($count = 10) {
-		$query_text = '
+		/*$fields = '
+			`users_id`,
+			`users_username`,
+			`users_password`
+		';
+		$tablename = 'users';*/
+
+		$fields = '
+			`users_id`,
+			`users_username`,
+			`users_password`
+		';
+		$tablename = 'posts';
+
+		$query_text = "
 
 			SELECT
-				`users_id`,
-				`user_name`,
-				`users_password`
+				$fields
 			FROM
-				`users`
+				`$tablename`
 			WHERE
 				1
 
-		';
+		";
 		\hlkiller_core::db()->query ($query_text);
 	}
 	public function make_mixed_attack () {}

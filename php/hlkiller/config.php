@@ -21,7 +21,7 @@
 					'type'      =>  'int',
 					'primary'   =>  true
 				),
-				'user_name' => array(
+				'users_username' => array(
 					'length'    =>  100,
 					'type'      =>  'string'
 				),
@@ -127,8 +127,8 @@
 
 		public static function getTables () {
 			$tables = array ();
-			foreach (self::$db_model as $table => $value)
-				$tables [] = $table;
+			foreach (self::$db_model as $tablename => $value)
+				$tables [] = array ('TABLE_NAME' => $tablename);
 			return $tables;
 		}
 	}
