@@ -28,6 +28,7 @@ public final class DbConnector {
 	private static String urlString;
 	private static String userName;
 	private static String password;
+	private static String dumpCommand;
 
 	static {
 		try {
@@ -51,7 +52,6 @@ public final class DbConnector {
 				DbConnector.class.getClassLoader().getResource(fileName)
 						.toURI()));
 		prop.load(fileInputStream);
-		prop.load(fileInputStream);
 
 		driverClass = prop.getProperty("db.driver_class");
 		LOGGER.debug("db.driver_class={}", driverClass);
@@ -64,6 +64,9 @@ public final class DbConnector {
 
 		password = prop.getProperty("db.password");
 		LOGGER.debug("db.password={}", password);
+
+		dumpCommand = prop.getProperty("db.dump.command");
+		LOGGER.debug("db.dump.command={}", dumpCommand);
 
 	}
 
@@ -95,6 +98,37 @@ public final class DbConnector {
 			}
 		} catch (SQLException sqle) {
 			printSQLException(sqle);
+		}
+	}
+
+	public static void export(String dbName) {
+
+		Runtime rt = Runtime.getRuntime();
+
+		PrintStream ps;
+
+		try {
+			File file = new File(dbName + ".sql");
+			Process child = rt.exec(dumpCommand + " " + dbName);
+			ps = new PrintStream(file);
+			InputStream in = child.getInputStream();
+			int ch;
+			while ((ch = in.read()) != -1) {
+				ps.write(ch);
+			}
+
+			BufferedReader err = new BufferedReader(new InputStreamReader(
+					child.getErrorStream()));
+			StringBuilder errorBuilder = new StringBuilder();
+			String line;
+			while ((line = err.readLine()) != null) {
+				errorBuilder.append(line);
+			}
+			if (errorBuilder.length() != 0) {
+				LOGGER.error(errorBuilder.toString());
+			}
+		} catch (Exception e) {
+			LOGGER.error("Error while generating database dump", e);
 		}
 	}
 

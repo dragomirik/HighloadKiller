@@ -4,9 +4,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintStream;
-import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -29,7 +26,6 @@ import org.springframework.jdbc.datasource.init.ScriptUtils;
 import fishgenerator.model.Column;
 import fishgenerator.model.ForeignKey;
 import fishgenerator.model.Table;
-import fishgenerator.util.Db2Sql;
 import fishgenerator.util.DbConnector;
 
 public class FishService {
@@ -405,9 +401,7 @@ public class FishService {
 		List<Table> tableList = fishService.getTableList(dbName);
 
 		fishService.fillDB(dbName, tableList);
-//		PrintWriter writer = new PrintWriter(new File("dump.sql"));
-//		writer.write(Db2Sql.dumpDB(dbName));
-//		writer.close();
+		DbConnector.export(dbName);
 
 	}
 
