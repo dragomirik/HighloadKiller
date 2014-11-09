@@ -4,6 +4,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -26,6 +29,7 @@ import org.springframework.jdbc.datasource.init.ScriptUtils;
 import fishgenerator.model.Column;
 import fishgenerator.model.ForeignKey;
 import fishgenerator.model.Table;
+import fishgenerator.util.Db2Sql;
 import fishgenerator.util.DbConnector;
 
 public class FishService {
@@ -90,6 +94,15 @@ public class FishService {
 		}
 	}
 
+	public static String generateString(Random rng, String characters,
+			int length) {
+		char[] text = new char[length];
+		for (int i = 0; i < length; i++) {
+			text[i] = characters.charAt(rng.nextInt(characters.length()));
+		}
+		return new String(text);
+	}
+
 	private void fillTable(Connection connection, Table table)
 			throws SQLException {
 
@@ -142,8 +155,8 @@ public class FishService {
 
 				boolean isForeignKey = false;
 				for (ForeignKey foreignKey : foreignKeys) {
-					if (foreignKey.getFkColumnName().equals(
-							columns.get(j).getName())) {
+					if (foreignKey.getFkColumnName()
+							.equals(columns.get(j).name)) {
 						isForeignKey = true;
 						break;
 					}
@@ -151,7 +164,7 @@ public class FishService {
 
 				Object value = null;
 				if (!isForeignKey) {
-					switch (columns.get(j).getType()) {
+					switch (columns.get(j).type) {
 					case Types.CHAR:
 					case Types.VARCHAR:
 					case Types.LONGVARCHAR:
@@ -165,11 +178,10 @@ public class FishService {
 					case Types.BIT:
 						value = new Random().nextBoolean();
 						// boolean
-						// case Types.TINYINT:
-						// byte b = Byte.MAX_VALUE;
-						// // byte
-						// case Types.SMALLINT:
-						// // short
+					case Types.TINYINT:
+					case Types.SMALLINT:
+						// byte
+						value = Math.round(Math.random() * Short.MAX_VALUE);
 						break;
 					case Types.INTEGER:
 						value = Math.round(Math.random() * Integer.MAX_VALUE);
@@ -181,30 +193,48 @@ public class FishService {
 					// case Types.FLOAT:
 					// case Types.DOUBLE:
 					// // double
-					// case Types.BINARY:
-					// case Types.VARBINARY:
-					// case Types.LONGVARBINARY:
-					// // byte[]
-					// case Types.DATE:
-					// // java.sql.Date
-					// case Types.TIME:
-					// // java.sql.Time
-					// case Types.TIMESTAMP:
-					// // java.sql.Timestamp
-					// case Types.CLOB:
-					// // Clob
-					// case Types.BLOB:
-					// // Blob
-					// case Types.ARRAY:
-					// // Array
+					case Types.BINARY:
+						value = Math.round(Math.random() * Integer.MAX_VALUE);
+						// case Types.VARBINARY:
+						// case Types.LONGVARBINARY:
+						// // byte[]
+						// case Types.DATE:
+						// // java.sql.Date
+						// case Types.TIME:
+						// // java.sql.Time
+						// case Types.TIMESTAMP:
+						// // java.sql.Timestamp
+						// case Types.CLOB:
+						// // Clob
+						// case Types.BLOB:
+						// // Blob
+						// case Types.ARRAY:
+						// // Array
 					default:
 						value = "";
 						break;
 					}
+
+					String valueString = value.toString();
+					int columnSize = columns.get(j).size;
+
+					if (valueString.toCharArray().length > columnSize) {
+						if (columnSize == 0) {
+							columnSize = 1;
+						}
+						if (valueString.endsWith("\"")) {
+							valueString = valueString.substring(0,
+									columnSize - 1) + "\"";
+						} else {
+							valueString = valueString.substring(0, columnSize);
+						}
+					}
+
+					value = valueString;
 				} else {
 					for (ForeignKey foreignKey : foreignKeys) {
 						if (foreignKey.getFkColumnName().equals(
-								columns.get(j).getName())) {
+								columns.get(j).name)) {
 							List<Object> possibleValues = possibleValuesMap
 									.get(foreignKey.getFkColumnName());
 							int valueIndex = (int) (Math.random() * possibleValues
@@ -251,6 +281,7 @@ public class FishService {
 		for (Table table : tableList) {
 			fillTable(connection, table, tableList);
 		}
+		DbConnector.closeConnection(connection);
 	}
 
 	private Table findTableByName(String pkTableName, List<Table> tableList) {
@@ -263,7 +294,8 @@ public class FishService {
 	}
 
 	private List<String> readSqlScript() throws URISyntaxException, IOException {
-		URL url = FishService.class.getClassLoader().getResource("uwc.sql");
+		URL url = FishService.class.getClassLoader().getResource(
+				"test_dump.sql");
 		BufferedReader bufferedReader = new BufferedReader(new FileReader(
 				new File(url.toURI())));
 
@@ -307,16 +339,33 @@ public class FishService {
 			String tableName) throws SQLException {
 		DatabaseMetaData metadata = connection.getMetaData();
 		List<Column> columnList = new ArrayList<Column>();
-		ResultSet columns = metadata.getColumns(null, null, tableName, "%");
+		// ResultSet columns = metadata.getColumns(null, null, tableName, "%");
+		Statement statement = connection.createStatement();
+		ResultSet columns = statement
+				.executeQuery("Select * from " + tableName);
 
-		while (columns.next()) {
+		// ResultSetMetaData columnsMetadata = columns.getMetaData();
+		// int columnsNumber = columnsMetadata.getColumnCount();
+		// for (int i = 1; i <= columnsNumber; i++) {
+		// System.out.println(i + ",  column property: "
+		//
+		// + columnsMetadata.getColumnName(i) + ": "
+		// + columns.getString(i));
+		// }
 
-			int columnSize = columns.getInt("COLUMN_SIZE");
-			String columnName = columns.getString("COLUMN_NAME");
-			int dataType = columns.getInt("DATA_TYPE");
+		// int columnSize = columns.getInt("COLUMN_SIZE");
+		// String columnName = columns.getString("COLUMN_NAME");
+		// int dataType = columns.getInt("DATA_TYPE");
 
-			Column column = new Column(columnName, dataType);
+		ResultSetMetaData columnsMetadata = columns.getMetaData();
+		for (int i = 1; i <= columnsMetadata.getColumnCount(); i++) {
+			int columnSize = columnsMetadata.getColumnDisplaySize(i);
+			String columnName = columnsMetadata.getColumnName(i);
+			int dataType = columnsMetadata.getColumnType(i);
 
+			System.out.println(columnName + ", " + columnSize);
+
+			Column column = new Column(columnName, dataType, columnSize);
 			columnList.add(column);
 
 		}
@@ -356,5 +405,10 @@ public class FishService {
 		List<Table> tableList = fishService.getTableList(dbName);
 
 		fishService.fillDB(dbName, tableList);
+//		PrintWriter writer = new PrintWriter(new File("dump.sql"));
+//		writer.write(Db2Sql.dumpDB(dbName));
+//		writer.close();
+
 	}
+
 }

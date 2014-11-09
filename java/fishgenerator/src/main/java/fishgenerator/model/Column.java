@@ -1,28 +1,14 @@
 package fishgenerator.model;
 
-public class Column {
-	private String name;
-	private int type;
+public final class Column {
+	public final String name;
+	public final int type;
+	public final int size;
 
-	public Column(String name, int type) {
+	public Column(String name, int type, int size) {
 		this.name = name;
-		this.setType(type);
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public int getType() {
-		return type;
-	}
-
-	public void setType(int type) {
 		this.type = type;
+		this.size = size;
 	}
 
 }
