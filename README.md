@@ -3,8 +3,10 @@ HighloadKiller
 Highload SQL queries testing
 
 
+==============
 Read manual: https://docs.google.com/document/d/1EQaRDtzHf1Nh_7uAluGsB0zj9mRbt2MCQm1NtGNzC2s/edit
 
+==============
 Developers:
 
 Viktor Vetsko      | viktor.vetsko@gmail.com     | skype: bigset1           | github: bigset1
