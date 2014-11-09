@@ -19,6 +19,8 @@ function get_primary_value($field,array $array) {
 function ajax_route ($request) {
 	switch ($request) {
         case 'generate_fish' : {
+	        if (isset ($_GET ['users_by_step']))
+		        \testing_config::$gen_fish ['partCount'] = $_GET ['users_by_step'];
             $db_generator = new \db_generator ();
             $db_generator->generate_fish();
         }
@@ -38,6 +40,11 @@ function ajax_route ($request) {
 			$func = 'make_select_attack';
 			if ($_GET ['action'] == '2') $func .= '2';
 			$machine_gun->run_select($machine_gun->$func ());
+		}
+			break;
+		case 'make_random_query' : {
+			$machine_gun = new \machine_gun ();
+			$machine_gun->make_random_query();
 		}
 			break;
 		case 'hight_load_emulation' : {

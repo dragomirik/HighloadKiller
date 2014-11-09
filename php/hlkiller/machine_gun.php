@@ -1,7 +1,11 @@
 <?php
 class machine_gun {
-	public function init () {}
 
+	/**
+	 * return first query
+	 *
+	 * @return string
+	 */
 	public function make_select_attack () {
 		$current_user_id = (int) \testing_config::$select ['current_user_id'];
 		$count           = (int) \testing_config::$select ['count'];
@@ -83,13 +87,19 @@ class machine_gun {
 			$JOINs
 			WHERE
 				$conditions
+			ORDER BY
+				`posts`.`posts_created_time` DESC
 			LIMIT
 				0, $count
 		";
-		//echo $query_text;
 		return $query_text;
 	}
 
+	/**
+	 * return new query
+	 *
+	 * @return string
+	 */
 	public function make_select_attack2 () {
 		$current_user_id = (int) \testing_config::$select ['current_user_id'];
 		$count           = (int) \testing_config::$select ['count'];
@@ -171,21 +181,53 @@ class machine_gun {
 			$JOINs
 			WHERE
 				$conditions
+			ORDER BY
+				`posts`.`posts_created_time` DESC
 			LIMIT
 				0, $count
 		";
-		//echo $query_text;
 		return $query_text;
 	}
 
-	public function make_mixed_attack () {}
-	public function high_load_emulation () {}
+	/**
+	 * ajax-function to execute random query from array [insert, update, delete]
+	 */
+	public function make_random_query () {
+		$count = \testing_config::queries_array ();
+		$times = 1;
+		if (isset($_GET ['times'])) $times = $_GET ['times'];
+
+		$start_time = microtime (2);
+			for ($i = 0; $i < $times; $i ++) {
+				$id = rand (0, $count - 1);
+				\testing_config::queries_array ($id);
+			}
+		$end_time = microtime (2);
+		echo $end_time - $start_time, '<br>';
+	}
+
+	/**
+	 * in developing ...
+	 */
+	public function high_load_emulation () {
+
+	}
+
+	/**
+	 * not used
+	 */
 	public function get_statistics () {}
 
+
+	/**
+	 * run select query by generated text query
+	 *
+	 * @param $query_text
+	 */
 	public function run_select ($query_text) {
 		//$times = (int) \testing_config::$select ['times'];
 		$times = $_GET ['times'];
-		$db = \hlkiller_core::db ();
+		$db = &\hlkiller_core::db ();
 		$start_time = microtime (2);
 		for ($i = 0; $i < $times; $i++){
 			try {

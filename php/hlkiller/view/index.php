@@ -11,20 +11,29 @@
 				</br></br>
 
 				<div class="generete_block">
-					
-					<div class="btn btn-large input_btn gen_fish">Generate fish</div>
-					<div class="btn btn-large clear_db">Clear DataBase</div>
+					<b class="white">Users by Step:</b>
+					<input class="users_by_step w40" value="10" /><br/>
+					<b class="white">Steps Count:</b>
+					<input class="steps_count w40" value="10" /><br/>
+					<br/>
+					<a class="btn btn-large input_btn gen_fish">Generate fish</a>
+					<a class="btn btn-large input_btn gen_stop">Stop Generate</a>
+					<br/><br/>
+					<a class="btn btn-large clear_db">Clear DataBase #1</a>
+					<a class="btn btn-large clear_db">Clear DataBase #2</a>
 					
 				</div>
 	
 				<div class="high_load_block hidden">
 				
 						<b class="white">Queries by request:</b>
-						<input class="query_php_push_count w40" value="10" /><br/>
+						<input class="query_php_push_count w40" value="1" /><br/>
 						
 						<b class="white">Requests by second:</b>
 						<input class="query_ajax_push_count w40" value="10" /><br/><br/>
 						
+						<a class="btn btn-large high_load_btn stop_attack">Stop Attack!</a>
+						<br/><br/>
 						<a class="btn btn-large high_load_btn max_select_attack">Max SELECT Attack #1</a>
 						<a class="btn btn-large high_load_btn max_select_attack2">Max SELECT Attack #2</a>
 						</br></br>
@@ -35,6 +44,8 @@
 						<a class="btn btn-large high_load_btn">Middle load #2</a>
 				</div>
 			</div>
+			<div class="clearfix"></div>
+			<br/><br/><br/><br/>
 		</div>
 	</div>
 </div>
