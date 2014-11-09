@@ -50,7 +50,8 @@ abstract class testing_config {
                          } else {
                              $result = \hlkiller_core::db()->query("INSERT INTO `users_posts_like` (`users_id`,`posts_id`,`rel_users_posts_like_time`) VALUES ('$users[users_id]','$posts[posts_id]',UNIX_TIMESTAMP())");
                          }
-                         var_dump($result);
+                         return $result;
+                         
                     },
                     function() {
                         $users_q = \hlkiller_core::db()->query("SELECT `users_id` FROM `users` ORDER BY RAND() LIMIT 1");
@@ -65,7 +66,7 @@ abstract class testing_config {
                         } else {
                             $result = \hlkiller_core::db()->query("INSERT INTO `rel_users_following` (`users_follower_id`,`users_supplier_id`,`following_time`) VALUES ('$users[users_id]','$users2[users_id]',UNIX_TIMESTAMP())");
                         }
-                        var_dump($result);
+                        return $result;
                     },
                     function() {
                         $users_q = \hlkiller_core::db()->query("SELECT `users_id` FROM `users` ORDER BY RAND() LIMIT 1");
@@ -75,7 +76,7 @@ abstract class testing_config {
                         
                         $text = \annex::gen_rnd_text();
                         $result = \hlkiller_core::db()->query("INSERT INTO `rel_users_posts_comments` (`users_id`,`posts_id`,`rel_users_posts_comments_time`,`comments_text`) VALUES ('$users[users_id]','$posts[posts_id]',UNIX_TIMESTAMP(),'$text')");
-                        var_dump($result);
+                        return $result;
                     },
                     function() {
                         $posts_q = \hlkiller_core::db()->query("SELECT `posts_id` FROM `posts` ORDER BY RAND() LIMIT 1");
@@ -89,7 +90,7 @@ abstract class testing_config {
                         }  else {
                             $result = \hlkiller_core::db()->query("INSERT INTO `rel_posts_categories` (`posts_id`,`categories_id`) VALUES ('$posts[posts_id]','$categories[categories_id]')");
                         }
-                        var_dump($result);
+                        return $result;
                         
                     },
                     function() {
@@ -97,12 +98,12 @@ abstract class testing_config {
                         $pass = \annex::gen_rnd_str(25);
                         $time = time();
                         $result = \hlkiller_core::db()->query("INSERT INTO `users` (`users_username`,`users_password`,`users_created_on`) VALUES ('$name','$pass','$time')");
-                        var_dump($result);
+                        return $result;
                     }
                 ); 
         
             if(!is_null($index)) {
-                $arr[$index]();
+                return $arr[$index]();
             } else {
                 return count($arr);
             }

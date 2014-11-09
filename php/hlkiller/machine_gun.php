@@ -193,17 +193,21 @@ class machine_gun {
 	 * ajax-function to execute random query from array [insert, update, delete]
 	 */
 	public function make_random_query () {
-		$count = \testing_config::queries_array ();
-		$times = 1;
-		if (isset($_GET ['times'])) $times = $_GET ['times'];
+            $count = \testing_config::queries_array ();
+            $times = 1;
+            $rands = array();
+            if (isset($_GET ['times'])) $times = $_GET ['times'];
 
-		$start_time = microtime (2);
-			for ($i = 0; $i < $times; $i ++) {
-				$id = rand (0, $count - 1);
-				\testing_config::queries_array ($id);
-			}
-		$end_time = microtime (2);
-		echo $end_time - $start_time, '<br>';
+            $start_time = microtime (2);
+            for ($i = 0; $i < $times; $i ++) {
+                    $id = rand (0, $count - 1);
+                    $rands[] = array($id, \testing_config::queries_array ($id));
+            }
+            $end_time = microtime (2);
+            echo json_encode(array(
+                'diff'=>$end_time - $start_time,
+                'rand_queries'=>$rands
+            ));
 	}
 
 	/**
