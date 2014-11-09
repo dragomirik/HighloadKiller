@@ -21,5 +21,5 @@ Denis Ivanets      | denself@gmail.com           | skype: big_denself       | gi
 
 Dima Tkach         (Offline Consultant + Front-End)
 
-
+Text
 ==============
