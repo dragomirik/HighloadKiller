@@ -64,7 +64,7 @@ abstract class hlkiller_core
 
 //                    echo self::db()->affected_rows.' '.'<br><br>';
                 if ($result === false) {
-                    echo $table . ' - >>>   ' . $q . '<br><br>';
+                    //echo $table . ' - >>>   ' . $q . '<br><br>';
                 }
 
                 break;

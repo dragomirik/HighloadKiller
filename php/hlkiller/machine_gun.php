@@ -195,13 +195,12 @@ class machine_gun {
 	public function make_random_query () {
 		$count = \testing_config::queries_array ();
 		$times = 1;
-		$db = &\hlkiller_core::db ();
 		if (isset($_GET ['times'])) $times = $_GET ['times'];
 
 		$start_time = microtime (2);
-			for ($i = 1; $i < $times; $i ++) {
+			for ($i = 0; $i < $times; $i ++) {
 				$id = rand (0, $count - 1);
-				$db->query (\testing_config::queries_array ($id));
+				\testing_config::queries_array ($id);
 			}
 		$end_time = microtime (2);
 		echo $end_time - $start_time, '<br>';

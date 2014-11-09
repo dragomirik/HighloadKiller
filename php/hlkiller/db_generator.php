@@ -90,7 +90,7 @@ class db_generator {
                 'values'=>$categories_insert_arr
             ));
         }
-        $finalUsersCount = $startUsers+$config['finalUsersCount']-1;
+        $finalUsersCount = $startUsers+$partCount*$config['finalUsersCount']-1;
         
 
         for ($user_part_first_id=$startUsers; $user_part_first_id<=$finalUsersCount; $user_part_first_id+=$partCount) {
@@ -173,11 +173,11 @@ class db_generator {
                 }
 
                 if($counter%25==0) {
-                    var_dump(count($posts_insert_values_arr));
-                    var_dump(count($rel_categories_posts_insert_arr));
-                    var_dump(count($rel_comments_posts_insert_arr));
-                    var_dump(count($rel_like_posts_insert_arr));
-                    echo '<br><br>';
+                    //var_dump(count($posts_insert_values_arr));
+                    //var_dump(count($rel_categories_posts_insert_arr));
+                    //var_dump(count($rel_comments_posts_insert_arr));
+                    //var_dump(count($rel_like_posts_insert_arr));
+                    //echo '<br><br>';
                     \hlkiller_core::sql_gen('insert',array(
                         'table'=>'posts',
                         'delayed'=>TRUE,// DELAYED
@@ -246,8 +246,11 @@ class db_generator {
         
         $finish = microtime(TRUE);
         $totaltime = $finish - $start;
-
-        echo "This script took ".$totaltime." seconds to run";
+        echo json_encode(array(
+            'script'=>$totaltime,
+            'userID'=>$finalUsersCount+1,
+            'post_id'=>$post_id
+        ));
        
     }
 
@@ -256,21 +259,16 @@ class db_generator {
 	 */
 	public function clear_db () {
         
-        $action = filter_input(INPUT_POST, 'action',FILTER_VALIDATE_INT);
-        
+        $action = $_GET['action'];
         $_SESSION['exist'] = '0';
         foreach(\config::getTables() as $table) {
             try {
-                //$sql = "TRUNCATE TABLE `".$table['TABLE_NAME']."`";
                 $sql = "DROP TABLE IF EXISTS `".$table['TABLE_NAME']."`";
-                //$sql = "DELETE FROM `".$table['TABLE_NAME']."`";
                 $result = \hlkiller_core::db ()->query($sql);
                 if ($result === false) {
                     echo $sql.';';
                     throw new \Exceptions\MySQLQuery ('Mysqli died.');
                 }
-                //$sql = "ALTER TABLE `".$table['TABLE_NAME']."` AUTO_INCREMENT=1";
-                //$result = \hlkiller_core::db ()->query($sql);
 
             }
             catch (\Exceptions\MySQLQuery $e) {
