@@ -5,7 +5,7 @@ public final class Column {
 	public final int type;
 	public final int size;
 
-	public Column(String name, int type, int size) {
+	public Column(final String name, final int type, final int size) {
 		this.name = name;
 		this.type = type;
 		this.size = size;

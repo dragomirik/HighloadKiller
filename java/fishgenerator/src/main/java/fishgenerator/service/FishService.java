@@ -77,7 +77,7 @@ public class FishService {
 
 		if (!table.isFilled()) {
 			for (ForeignKey foreignKey : table.getForeinKeys()) {
-				Table pkTable = findTableByName(foreignKey.getPkTableName(),
+				Table pkTable = findTableByName(foreignKey.pkTableName,
 						tableList);
 				if (!pkTable.isFilled()) {
 					fillTable(connection, pkTable, tableList);
@@ -101,6 +101,7 @@ public class FishService {
 
 	private void fillTable(Connection connection, Table table)
 			throws SQLException {
+		final Random random = new Random();
 
 		StringBuilder inserBuilder = new StringBuilder();
 		inserBuilder.append("insert into ");
@@ -111,8 +112,8 @@ public class FishService {
 		List<ForeignKey> foreignKeys = table.getForeinKeys();
 		Map<String, List<Object>> possibleValuesMap = new HashMap<String, List<Object>>();
 		for (ForeignKey foreignKey : foreignKeys) {
-			String pkTableName = foreignKey.getPkTableName();
-			String pkColumnName = foreignKey.getPkColumnName();
+			String pkTableName = foreignKey.pkTableName;
+			String pkColumnName = foreignKey.pkColumnName;
 
 			Statement statement = connection.createStatement();
 
@@ -136,7 +137,7 @@ public class FishService {
 				}
 				possibleValues.add(possibleValue);
 			}
-			possibleValuesMap.put(foreignKey.getFkColumnName(), possibleValues);
+			possibleValuesMap.put(foreignKey.fkColumnName, possibleValues);
 		}
 
 		for (int i = 0; i < 100; i++) {
@@ -151,8 +152,7 @@ public class FishService {
 
 				boolean isForeignKey = false;
 				for (ForeignKey foreignKey : foreignKeys) {
-					if (foreignKey.getFkColumnName()
-							.equals(columns.get(j).name)) {
+					if (foreignKey.fkColumnName.equals(columns.get(j).name)) {
 						isForeignKey = true;
 						break;
 					}
@@ -172,7 +172,7 @@ public class FishService {
 						value = new BigDecimal(Math.random());
 						break;
 					case Types.BIT:
-						value = new Random().nextBoolean();
+						value = random.nextBoolean();
 						// boolean
 					case Types.TINYINT:
 					case Types.SMALLINT:
@@ -229,10 +229,9 @@ public class FishService {
 					value = valueString;
 				} else {
 					for (ForeignKey foreignKey : foreignKeys) {
-						if (foreignKey.getFkColumnName().equals(
-								columns.get(j).name)) {
+						if (foreignKey.fkColumnName.equals(columns.get(j).name)) {
 							List<Object> possibleValues = possibleValuesMap
-									.get(foreignKey.getFkColumnName());
+									.get(foreignKey.fkColumnName);
 							int valueIndex = (int) (Math.random() * possibleValues
 									.size());
 							value = possibleValues.remove(valueIndex);
@@ -251,24 +250,6 @@ public class FishService {
 		Statement statement = connection.createStatement();
 		statement.executeUpdate(inserBuilder.toString());
 		table.setFilled(true);
-	}
-
-	private void fillColumns(Connection connection) throws SQLException {
-		DatabaseMetaData metadata = connection.getMetaData();
-		ResultSet columns = metadata.getColumns(null, null, "%", null);
-		StringBuilder valuesBuilder = new StringBuilder();
-
-		while (columns.next()) {
-
-			ResultSetMetaData columnsMetadata = columns.getMetaData();
-			int columnsNumber = columnsMetadata.getColumnCount();
-			for (int i = 1; i <= columnsNumber; i++) {
-				System.out.println(i + ",  column property: "
-
-				+ columnsMetadata.getColumnName(i) + ": "
-						+ columns.getString(i));
-			}
-		}
 	}
 
 	private void fillDB(String dbName, List<Table> tableList)
@@ -333,25 +314,11 @@ public class FishService {
 
 	private List<Column> getColumnsByTableName(Connection connection,
 			String tableName) throws SQLException {
-		DatabaseMetaData metadata = connection.getMetaData();
 		List<Column> columnList = new ArrayList<Column>();
-		// ResultSet columns = metadata.getColumns(null, null, tableName, "%");
+
 		Statement statement = connection.createStatement();
 		ResultSet columns = statement
-				.executeQuery("Select * from " + tableName);
-
-		// ResultSetMetaData columnsMetadata = columns.getMetaData();
-		// int columnsNumber = columnsMetadata.getColumnCount();
-		// for (int i = 1; i <= columnsNumber; i++) {
-		// System.out.println(i + ",  column property: "
-		//
-		// + columnsMetadata.getColumnName(i) + ": "
-		// + columns.getString(i));
-		// }
-
-		// int columnSize = columns.getInt("COLUMN_SIZE");
-		// String columnName = columns.getString("COLUMN_NAME");
-		// int dataType = columns.getInt("DATA_TYPE");
+				.executeQuery("select * from " + tableName);
 
 		ResultSetMetaData columnsMetadata = columns.getMetaData();
 		for (int i = 1; i <= columnsMetadata.getColumnCount(); i++) {
@@ -376,13 +343,12 @@ public class FishService {
 				connection.getCatalog(), null, tableName);
 		while (importedKeys.next()) {
 
-			String pkTableName = importedKeys.getString("PKTABLE_NAME");
-			String pkColumnName = importedKeys.getString("PKCOLUMN_NAME");
-			String fkTableName = importedKeys.getString("FKTABLE_NAME");
-			String fkColumnName = importedKeys.getString("FKCOLUMN_NAME");
+			final String pkTableName = importedKeys.getString("PKTABLE_NAME");
+			final String pkColumnName = importedKeys.getString("PKCOLUMN_NAME");
+			final String fkColumnName = importedKeys.getString("FKCOLUMN_NAME");
 
-			ForeignKey foreignKey = new ForeignKey(pkTableName, pkColumnName,
-					fkTableName, fkColumnName);
+			final ForeignKey foreignKey = new ForeignKey(pkTableName,
+					pkColumnName, fkColumnName);
 			fkList.add(foreignKey);
 		}
 
