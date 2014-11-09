@@ -2,12 +2,13 @@ HighloadKiller
 ==============
 Highload SQL queries testing
 
-
+Read manual
 ==============
-Read manual: https://docs.google.com/document/d/1EQaRDtzHf1Nh_7uAluGsB0zj9mRbt2MCQm1NtGNzC2s/edit
+https://docs.google.com/document/d/1EQaRDtzHf1Nh_7uAluGsB0zj9mRbt2MCQm1NtGNzC2s/edit
 
+
+Developers
 ==============
-Developers:
 
 Viktor Vetsko      | viktor.vetsko@gmail.com     | skype: bigset1           | github: bigset1
 
@@ -20,6 +21,7 @@ Alex Torrison      | cd99@mail.ru                | skype: alex_xandr        | gi
 Denis Ivanets      | denself@gmail.com           | skype: big_denself       | github: denself
 
 Dima Tkach         (Offline Consultant + Front-End)
+
 
 Text
 ==============
