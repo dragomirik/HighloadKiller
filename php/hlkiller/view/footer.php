@@ -97,6 +97,52 @@
 			}, Math.floor(1000/parseInt($('.query_ajax_push_count').val())));
 		  };
 		});
+		
+		$('.max_select_attack').on('click', function() {
+	  		  
+	      attack_count++;
+	      var this_count = attack_count;
+		  $.get('index.php?do=make_select_attack&action=1&times='+parseInt($('.query_php_push_count').val()), function(data){
+			  $('#result_div').prepend('<a onclick="$(this).next().toggle();">SELECT Request [1] #'+this_count+'</a><div class="box_shadow2 p10" style="display:none;">'+data+'</div> - <b class="green">Ok!</b><br/>');
+		  });
+		  
+		  if (attack_count < parseInt($('.query_ajax_push_count').val()) && attack_count < 1000000) {
+			setTimeout(function(){
+			
+				$('.max_select_attack').click();
+			
+			}, Math.floor(1000/parseInt($('.query_ajax_push_count').val())));
+		  };
+		  
+	  });
+	  
+	  $('.mixed_select_attack').on('click', function() {
+	  		  
+	      alert('Mixed Select Attack #1');
+		  
+	  });
+	  
+	  $('.mixed_select_attack2').on('click', function() {
+	  		  
+	      alert('Mixed Select Attack #2');
+		  
+	  });
+	  
+	  
+	  
+	  
+		
+		var free_request = 0;
+		$('.push_to_final').on('click', function() {
+				
+			this_count = free_request;
+					
+				
+			$.get('index.php?do=XXXXXXXXX', function(data){
+			  $('#result_div').prepend('<a onclick="$(this).next().toggle();">FREE Request #'+this_count+'</a><div class="box_shadow2 p10" style="display:none;">'+data+'</div> - <b class="green">Ok!</b><br/>');
+			});
+		
+		});
 
   
   });
